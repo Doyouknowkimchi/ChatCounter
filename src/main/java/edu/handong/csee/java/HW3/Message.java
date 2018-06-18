@@ -3,12 +3,28 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Message {
-	private String name;
+	private String userID;
 	private String message;
-	private int count;
-	HashMap<String,ArrayList<Message>> chattingMan = new HashMap<String,ArrayList<Message>>();
+	private String date;
 	
+	public String getUserID() {
+		return userID;
+	}
+	public void setUserID(String userID) {
+		this.userID = userID;
+	}
+	public String getMessage() {
+		return message;
+	}
+	public void setMessage(String message) {
+		this.message = message;
+	}
+	public String getDate() {
+		return date;
+	}
+	public void setDate(String date) {
+		this.date = date;
+	}
+
 	
-	
-	// make hash map(extend 통해 가산점도 받아야 한다.)
 }
