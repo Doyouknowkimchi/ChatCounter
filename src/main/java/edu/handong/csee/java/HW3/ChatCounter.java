@@ -25,11 +25,12 @@ public class ChatCounter {
 		//2. 중복 체크(hashmap 넘겨준다)
 		RedundancyChecker check = new RedundancyChecker();
 		map = check.redundanCheack(map);
-		
+		System.out.println(messageCounter(map));
 		//3. 중복 체크 후에 받아온 새로운 hashmap으로 메세지 카운트 한다.
 		messageCounter(map);
+		System.out.println(messageCounter(map));
 		//4. 결과를 파일로 작성
-		FileWriter resultWrite = new FileWriter();
+		//WriteFile resultWrite = new WriteFile(messageCounter.map);
 	}
 	
 	public HashMap<String,String> messageCounter(HashMap<String,ArrayList<Message>> map){
