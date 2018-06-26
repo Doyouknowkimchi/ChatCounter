@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 
 public class CSVParser extends Parser{
 	// make data useful
-	HashMap<String,ArrayList<Message>> csvUserCheat = new HashMap<String , ArrayList<Message>>();
+	HashMap<String,ArrayList<Message>> csvUserChat = new HashMap<String , ArrayList<Message>>();
 
 	HashMap<String,ArrayList<Message>> read(File file)
 	{
@@ -40,13 +40,13 @@ public class CSVParser extends Parser{
 					ms.setMessage(message);
 					ms.setUserID(id);
 
-					if(!csvUserCheat.containsKey(ms.getUserID())){
+					if(!csvUserChat.containsKey(ms.getUserID())){
 						ArrayList<Message> mesageList = new ArrayList<>();
-						csvUserCheat.put(id, mesageList);
+						csvUserChat.put(id, mesageList);
 					}
 
-					if(csvUserCheat.containsKey(ms.getUserID())){
-						ArrayList<Message> mesageList = csvUserCheat.get(ms.getUserID());
+					if(csvUserChat.containsKey(ms.getUserID())){
+						ArrayList<Message> mesageList = csvUserChat.get(ms.getUserID());
 						mesageList.add(ms);
 					}
 				}
@@ -63,6 +63,6 @@ public class CSVParser extends Parser{
 				e.printStackTrace();
 			}
 		}
-		return csvUserCheat;
+		return csvUserChat;
 	}
 }

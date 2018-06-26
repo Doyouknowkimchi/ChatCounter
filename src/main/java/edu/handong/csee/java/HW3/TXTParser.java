@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.security.acl.Group;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Matcher;
@@ -12,7 +13,7 @@ import java.util.regex.Pattern;
 
 public class TXTParser extends Parser {
 	// make data useful
-	HashMap<String,ArrayList<Message>> txtUserCheat = new HashMap<String , ArrayList<Message>>();
+	HashMap<String,ArrayList<Message>> txtUserChat = new HashMap<String , ArrayList<Message>>();
 	ArrayList<Message> messageList = new ArrayList<>();
 	HashMap<String,ArrayList<Message>> read(File file)
 	{
@@ -30,6 +31,7 @@ public class TXTParser extends Parser {
 			String hour = null;
 			String minute;
 			String regularTime = null;
+			int intHour;
 			while((line = br.readLine())!= null){
 
 				Pattern r = Pattern.compile(pattern);
@@ -44,13 +46,17 @@ public class TXTParser extends Parser {
 						pattern = "(.+)\\s([0-9]+):([0-9]+)";
 						Pattern tp = Pattern.compile(pattern);
 						Matcher tm = tp.matcher(time);
-						while(m.find()){
-							hour = String.format("%02d", hour);
-							minute = tm.group(2);
+						while(tm.find()){
+							intHour = Integer.parseInt(tm.group(2));
+							hour = String.valueOf(intHour);
+							if(intHour<10){
+							hour = String.format("%02d", intHour);
+							}
+							
+							minute = tm.group(3);
 							
 							regularTime = hour+":"+minute;
 						}
-						
 					}
 					
 					else if(time.contains("오후")){
@@ -58,31 +64,35 @@ public class TXTParser extends Parser {
 						Pattern tp = Pattern.compile(pattern);
 						Matcher tm = tp.matcher(time);
 						while(tm.find()){
-							hour = tm.group(1)+12;
-							minute = tm.group(2);
+							hour = tm.group(2)+12;
+							minute = tm.group(3);
 							
 							regularTime = hour+":"+minute;
 						}
 					}
 
-					else if(time.contains("am")){
+					else if(time.contains("AM")){
 						pattern = "([0-9]+):([0-9]+)\\s(.+)";
 						Pattern tp = Pattern.compile(pattern);
 						Matcher tm = tp.matcher(time);
 						while(tm.find()){
-							hour = tm.group(1)+12;
+							intHour = Integer.parseInt(tm.group(1));
+							hour = String.valueOf(intHour);
+							if(intHour<10){
+							hour = String.format("%02d", intHour);
+							}
 							minute = tm.group(2);
 							
 							regularTime = hour+":"+minute;
 						}
 					}
 					
-					else if(time.contains("pm")){
+					else if(time.contains("PM")){
 						pattern = "([0-9]+):([0-9]+)\\s(.+)";
 						Pattern tp = Pattern.compile(pattern);
 						Matcher tm = tp.matcher(time);
 						while(tm.find()){
-							hour = String.format("%02d", hour);
+							hour = tm.group(1)+12;
 							minute = tm.group(2);
 							
 							regularTime = hour+":"+minute;
@@ -98,12 +108,12 @@ public class TXTParser extends Parser {
 
 					// need to change time expression(to csv format)
 
-					if(!txtUserCheat.containsKey(ms.getUserID())){
+					if(!(txtUserChat.containsKey(ms.getUserID()))){
 						ArrayList<Message> mesageList = new ArrayList<>();
-						txtUserCheat.put(id, mesageList);
+						txtUserChat.put(id, mesageList);
 					}
-					if(txtUserCheat.containsKey(ms.getUserID())){ 
-						ArrayList<Message> mesageList = txtUserCheat.get(ms.getUserID());
+					if(txtUserChat.containsKey(ms.getUserID())){ 
+						ArrayList<Message> mesageList = txtUserChat.get(ms.getUserID());
 						mesageList.add(ms);
 					}
 				}
@@ -119,6 +129,6 @@ public class TXTParser extends Parser {
 				e.printStackTrace();
 			}
 		}
-		return txtUserCheat;
+		return txtUserChat;
 	}
 }
